@@ -4,7 +4,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -338,18 +337,20 @@ public class Picture {
         int width = this.getWidth();
         int height = this.getHeight();
         Picture out = new Picture(width, height);
+        int totalRed, totalGreen, totalBlue;
+        Color pixel;
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 // Checks if pixel is at the border
                 if (x > 0 && x < width - 1 && y > 0 && y < height - 1) {
-                    int totalRed = 0;
-                    int totalGreen = 0;
-                    int totalBlue = 0;
+                    totalRed = 0;
+                    totalGreen = 0;
+                    totalBlue = 0;
                     // Computes the average pixel values of neighbouring pixels
                     // including the pixel itself
                     for (int dx = -1; dx <= 1; dx++) {
                         for (int dy = -1; dy <= 1; dy++) {
-                            Color pixel = this.getPixel(x + dx, y + dy);
+                            pixel = this.getPixel(x + dx, y + dy);
                             totalRed += pixel.getRed();
                             totalGreen += pixel.getGreen();
                             totalBlue += pixel.getBlue();
