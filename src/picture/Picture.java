@@ -368,12 +368,27 @@ public class Picture {
         return out;
     }
 
-//    public Picture mosaic(List<Picture> inputs, int tileSize) {
-//        // Creates a mosaic from a list of pictures
-//        // Obtains output dimensions
-//        List<Integer> minDims = getMinimumDimensions(inputs);
-//        int minWidth = minDims.get(0);
-//        int minHeight = minDims.get(1);
-//        int size = inputs.size();
-//    }
+    public static Picture mosaic(List<Picture> inputs, int tileSize) {
+        // Creates a mosaic from a list of pictures
+        // Obtains output dimensions
+        List<Integer> minDims = getMinimumDimensions(inputs);
+        int minWidth = minDims.get(0);
+        minWidth = minWidth - minWidth % tileSize;
+        int minHeight = minDims.get(1);
+        minHeight = minHeight - minHeight % tileSize;
+        int size = inputs.size();
+        Picture output = new Picture(minWidth, minHeight);
+
+        Picture currentPicture;
+        int currentIndex;
+        int numPictures = inputs.size();
+        for (int x = 0; x < minWidth; x++) {
+            for (int y = 0; y < minHeight; y++) {
+                currentIndex = (x / tileSize + y / tileSize) % numPictures;
+                currentPicture = inputs.get(currentIndex);
+                output.setPixel(x, y, currentPicture.getPixel(x, y));
+            }
+        }
+        return output;
+    }
 }

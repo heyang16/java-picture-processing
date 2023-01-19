@@ -59,6 +59,15 @@ public class PictureProcessor {
                 Picture out = input.blur();
                 out.saveAs(args[2]);
             }
+            case "mosaic" -> {
+                int tileSize = Integer.parseInt(args[1]);
+                List<Picture> inputs = new ArrayList<>();
+                for (int i = 2; i < args.length - 1; i++) {
+                    inputs.add(new Picture(args[i]));
+                }
+                Picture out = Picture.mosaic(inputs, tileSize);
+                out.saveAs(args[args.length - 1]);
+            }
         }
     }
 }
