@@ -140,4 +140,22 @@ public class PictureProcessorTest {
             "images/green64x64doc.png", "images/blue64x32doc.png",
             "images/red64x64.png"));
   }
+
+  @Test
+  public void docMosaic() throws IOException {
+    Assert.assertEquals(
+        new Picture("images/docMosaic.png"),
+        TestSuiteHelper.runMain(
+            tmpFolder, "mosaic", "8",
+            "images/rainbow64x64doc.png", "images/green64x64doc.png"));
+  }
+
+  @Test
+  public void blackWhiteMosaic() throws IOException {
+    Assert.assertEquals(
+        new Picture("images/chessboard.png"),
+        TestSuiteHelper.runMain(
+            tmpFolder, "mosaic", "8",
+            "images/black64x64.png", "images/white64x64.png"));
+  }
 }

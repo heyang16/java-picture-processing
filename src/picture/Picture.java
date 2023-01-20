@@ -1,16 +1,17 @@
 package picture;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import javax.imageio.ImageIO;
 
 /**
  * A class that encapsulates and provides a simplified interface for
  * manipulating an image. The internal representation of the image is based on
  * the RGB direct colour model.
  */
+@SuppressWarnings("SuspiciousNameCombination")
 public class Picture {
 
   /**
@@ -42,8 +43,8 @@ public class Picture {
    *
    * @param x the x co-ordinate of the point
    * @param y the y co-ordinate of the point
-   * @return <tt>true</tt> if the point lies within the boundaries of the
-   * picture, <tt>false</tt> otherwise.
+   * @return <tt>true</tt> if the point lies within the boundaries of the picture, <tt>false</tt>
+   * otherwise.
    */
   public boolean contains(int x, int y) {
     return x >= 0 && y >= 0 && x < getWidth() && y < getHeight();
@@ -198,45 +199,38 @@ public class Picture {
     return List.of(minWidth, minHeight);
   }
 
-  public void invert() {
+  public Picture invert() {
     // Inverts the color of the picture
-    int newRed, newGreen, newBlue;
-    Color originalPixel;
-    for (int x = 0; x < this.getWidth(); x++) {
-      for (int y = 0; y < this.getHeight(); y++) {
-        originalPixel = this.getPixel(x, y);
-        // Inverts the red, blue and green components
-        newRed = 255 - originalPixel.getRed();
-        newGreen = 255 - originalPixel.getGreen();
-        newBlue = 255 - originalPixel.getBlue();
-        // Modifies the color values of the current pixel
-        this.setPixel(x, y, new Color(newRed, newGreen, newBlue));
+    Picture out = new Picture(getWidth(), getHeight());
+    for (int x = 0; x < getWidth(); x++) {
+      for (int y = 0; y < getHeight(); y++) {
+        Color pixel = getPixel(x, y);
+        out.setPixel(x, y, pixel.invert());
       }
     }
+    return out;
   }
 
-  public void grayscale() {
+  public Picture grayscale() {
     // Converts the picture to grayscale by averaging color values
-    for (int x = 0; x < this.getWidth(); x++) {
-      for (int y = 0; y < this.getHeight(); y++) {
-        Color originalPixel = this.getPixel(x, y);
-        int avg =
-            (originalPixel.getBlue() + originalPixel.getGreen() +
-                originalPixel.getRed()) / 3;
-        this.setPixel(x, y, new Color(avg, avg, avg));
+    Picture out = new Picture(getWidth(), getHeight());
+    for (int x = 0; x < getWidth(); x++) {
+      for (int y = 0; y < getHeight(); y++) {
+        Color pixel = getPixel(x, y);
+        int avg = (pixel.getBlue() + pixel.getGreen() + pixel.getRed()) / 3;
+        out.setPixel(x, y, new Color(avg, avg, avg));
       }
     }
+    return out;
   }
 
   public Picture rotate90() {
     // Rotates the picture 90 degrees clockwise
     // Returns a picture after rotation
-    int width = this.getWidth();
-    int height = this.getHeight();
-    Picture out = new Picture(height, width);
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
-        out.setPixel(height - y - 1, x, this.getPixel(x, y));
+    Picture out = new Picture(getHeight(), getWidth());
+    for (int x = 0; x < getWidth(); x++) {
+      for (int y = 0; y < getHeight(); y++) {
+        out.setPixel(getHeight() - y - 1, x, getPixel(x, y));
       }
     }
     return out;
@@ -245,13 +239,11 @@ public class Picture {
   public Picture rotate180() {
     // Rotates the picture 180 degrees clockwise
     // Returns a picture after rotation
-    int width = this.getWidth();
-    int height = this.getHeight();
-    Picture out = new Picture(width, height);
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
-        out.setPixel(x, y, this.getPixel(width - x - 1,
-            height - y - 1));
+    Picture out = new Picture(getWidth(), getHeight());
+    for (int x = 0; x < getWidth(); x++) {
+      for (int y = 0; y < getHeight(); y++) {
+        out.setPixel(x, y, getPixel(getWidth() - x - 1,
+            getHeight() - y - 1));
       }
     }
     return out;
@@ -260,12 +252,10 @@ public class Picture {
   public Picture rotate270() {
     // Rotates the picture 270 degrees clockwise
     // Returns a picture after rotation
-    int width = this.getWidth();
-    int height = this.getHeight();
-    Picture out = new Picture(height, width);
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
-        out.setPixel(y, width - x - 1, this.getPixel(x, y));
+    Picture out = new Picture(getHeight(), getWidth());
+    for (int x = 0; x < getWidth(); x++) {
+      for (int y = 0; y < getHeight(); y++) {
+        out.setPixel(y, getWidth() - x - 1, getPixel(x, y));
       }
     }
     return out;
@@ -273,12 +263,10 @@ public class Picture {
 
   public Picture flipHorizontal() {
     // Flips the picture horizontally
-    int width = this.getWidth();
-    int height = this.getHeight();
-    Picture out = new Picture(width, height);
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
-        out.setPixel(x, y, this.getPixel(width - x - 1, y));
+    Picture out = new Picture(getWidth(), getHeight());
+    for (int x = 0; x < getWidth(); x++) {
+      for (int y = 0; y < getHeight(); y++) {
+        out.setPixel(x, y, getPixel(getWidth() - x - 1, y));
       }
     }
     return out;
@@ -286,12 +274,10 @@ public class Picture {
 
   public Picture flipVertical() {
     // Flips the picture vertically
-    int width = this.getWidth();
-    int height = this.getHeight();
-    Picture out = new Picture(width, height);
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
-        out.setPixel(x, y, this.getPixel(x, height - y - 1));
+    Picture out = new Picture(getWidth(), getHeight());
+    for (int x = 0; x < getWidth(); x++) {
+      for (int y = 0; y < getHeight(); y++) {
+        out.setPixel(x, y, this.getPixel(x, getHeight() - y - 1));
       }
     }
     return out;
@@ -306,24 +292,23 @@ public class Picture {
     List<Integer> minDims = getMinimumDimensions(inputs);
     int minWidth = minDims.get(0);
     int minHeight = minDims.get(1);
-    int size = inputs.size();
+    int numPictures = inputs.size();
     // Creates output picture
     Picture out = new Picture(minWidth, minHeight);
-    int totalRed, totalGreen, totalBlue;
     Color pixel;
     for (int x = 0; x < minWidth; x++) {
       for (int y = 0; y < minHeight; y++) {
-        totalRed = 0;
-        totalGreen = 0;
-        totalBlue = 0;
+        int totalRed = 0;
+        int totalGreen = 0;
+        int totalBlue = 0;
         for (Picture picture : inputs) {
           pixel = picture.getPixel(x, y);
           totalRed += pixel.getRed();
           totalGreen += pixel.getGreen();
           totalBlue += pixel.getBlue();
         }
-        Color avg = new Color(totalRed / size,
-            totalGreen / size, totalBlue / size);
+        Color avg = new Color(totalRed / numPictures,
+            totalGreen / numPictures, totalBlue / numPictures);
         out.setPixel(x, y, avg);
       }
     }
@@ -332,23 +317,20 @@ public class Picture {
 
   public Picture blur() {
     // Blurs the picture
-    int width = this.getWidth();
-    int height = this.getHeight();
-    Picture out = new Picture(width, height);
-    int totalRed, totalGreen, totalBlue;
+    Picture out = new Picture(getWidth(), getHeight());
     Color pixel;
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
+    for (int x = 0; x < getWidth(); x++) {
+      for (int y = 0; y < getHeight(); y++) {
         // Checks if pixel is at the border
-        if (x > 0 && x < width - 1 && y > 0 && y < height - 1) {
-          totalRed = 0;
-          totalGreen = 0;
-          totalBlue = 0;
+        if (x > 0 && x < getWidth() - 1 && y > 0 && y < getHeight() - 1) {
+          int totalRed = 0;
+          int totalGreen = 0;
+          int totalBlue = 0;
           // Computes the average pixel values of neighbouring pixels
           // including the pixel itself
           for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
-              pixel = this.getPixel(x + dx, y + dy);
+              pixel = getPixel(x + dx, y + dy);
               totalRed += pixel.getRed();
               totalGreen += pixel.getGreen();
               totalBlue += pixel.getBlue();
@@ -359,7 +341,7 @@ public class Picture {
           // Sets the pixel color to the average
           out.setPixel(x, y, avg);
         } else { // Pixel at the borders are unchanged
-          out.setPixel(x, y, this.getPixel(x, y));
+          out.setPixel(x, y, getPixel(x, y));
         }
       }
     }
@@ -369,20 +351,20 @@ public class Picture {
   public static Picture mosaic(List<Picture> inputs, int tileSize) {
     // Creates a mosaic from a list of pictures
     // Obtains output dimensions
+    // Dimensions have to be a multiple of the tile size
     List<Integer> minDims = getMinimumDimensions(inputs);
     int minWidth = minDims.get(0);
     minWidth = minWidth - minWidth % tileSize;
     int minHeight = minDims.get(1);
     minHeight = minHeight - minHeight % tileSize;
+
     Picture output = new Picture(minWidth, minHeight);
 
-    Picture currentPicture;
-    int currentIndex;
     int numPictures = inputs.size();
     for (int x = 0; x < minWidth; x++) {
       for (int y = 0; y < minHeight; y++) {
-        currentIndex = (x / tileSize + y / tileSize) % numPictures;
-        currentPicture = inputs.get(currentIndex);
+        int currentIndex = (x / tileSize + y / tileSize) % numPictures;
+        Picture currentPicture = inputs.get(currentIndex);
         output.setPixel(x, y, currentPicture.getPixel(x, y));
       }
     }

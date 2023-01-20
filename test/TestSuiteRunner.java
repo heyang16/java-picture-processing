@@ -5,10 +5,10 @@ import picture.PictureProcessorTest;
 
 public class TestSuiteRunner {
 
-    public static void main(String[] args) {
-        Result result = JUnitCore.runClasses(PictureProcessorTest.class);
-        for (Failure failure : result.getFailures()) {
-            System.out.println(failure.toString());
-        }
+  public static void main(String[] args) {
+    Result result = JUnitCore.runClasses(PictureProcessorTest.class);
+    for (Failure failure : result.getFailures()) {
+      System.out.println(failure.toString());
     }
+  }
 }

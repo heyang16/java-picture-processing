@@ -36,4 +36,8 @@ public class Color {
   public int getRed() {
     return red;
   }
+
+  public Color invert() {
+    return new Color(255 - getRed(), 255 - getGreen(), 255 - getBlue());
+  }
 }
