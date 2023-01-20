@@ -44,7 +44,7 @@ public class Picture {
    * @param x the x co-ordinate of the point
    * @param y the y co-ordinate of the point
    * @return <tt>true</tt> if the point lies within the boundaries of the picture, <tt>false</tt>
-   * otherwise.
+   *     otherwise.
    */
   public boolean contains(int x, int y) {
     return x >= 0 && y >= 0 && x < getWidth() && y < getHeight();
